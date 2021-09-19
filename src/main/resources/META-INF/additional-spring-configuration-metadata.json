@@ -1,0 +1,28 @@
+{
+  "properties": [
+    {
+      "name": "spring.model.book.datasource.url",
+      "type": "java.lang.String",
+      "description": "Description for spring.model.book.datasource.url."
+    },
+    {
+      "name": "spring.model.user.datasource.url",
+      "type": "java.lang.String",
+      "description": "Description for spring.model.user.datasource.url."
+    },
+    {
+      "name": "spring.model.user.datasource.driver-class-name",
+      "type": "java.lang.String",
+      "description": "Description for spring.model.user.datasource.driver-class-name."
+    },
+    {
+      "name": "spring.model.user.datasource.jdbcUrl",
+      "type": "java.lang.String",
+      "description": "Description for spring.model.user.datasource.jdbcUrl."
+    },
+    {
+      "name": "spring.user.datasource.jdbcUrl",
+      "type": "java.lang.String",
+      "description": "Description for spring.user.datasource.jdbcUrl."
+    }
+  ] }
