@@ -1,12 +1,11 @@
 package com.example.demo.config;
 
+import liquibase.integration.spring.SpringLiquibase;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -34,8 +33,8 @@ public class BookDbConfig {
     @Bean(name = "bookEntityManagerFactory")
     LocalContainerEntityManagerFactoryBean entityManagerFactoryBean(EntityManagerFactoryBuilder builder, @Qualifier("bookDb") DataSource dataSource) {
         Map<String, Object> map = new HashMap<>();
-//        map.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
-        map.put("hibernate.hbm2ddl.auto", "update");
+        map.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
+//        map.put("hibernate.hbm2ddl.auto", "update");
         return builder.dataSource(dataSource).properties(map).packages("com.example.demo.model.book").persistenceUnit("Book").build();
     }
 
@@ -43,5 +42,14 @@ public class BookDbConfig {
     public PlatformTransactionManager transactionManager(@Qualifier("bookEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
         return new JpaTransactionManager(entityManagerFactory);
 
+    }
+
+    @Bean("liquibaseS")
+    @DependsOn("bookDb")
+    public SpringLiquibase springLiquibase(@Qualifier("bookDb") DataSource dataSource){
+        SpringLiquibase springLiquibase = new SpringLiquibase();
+        springLiquibase.setDataSource(dataSource);
+        springLiquibase.setChangeLog("classpath:db.changelog/db.changelog-master.xml");
+        return springLiquibase;
     }
 }
